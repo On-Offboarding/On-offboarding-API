@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreFlowAPI", "CoreFlowAPI\CoreFlowAPI.csproj", "{D40647C0-36BB-4D20-835F-C0546951CC0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreFlowSharedLibrary", "CoreFlowSharedLibrary\CoreFlowSharedLibrary.csproj", "{E9BBF30C-33CB-4A86-AB5C-311C6AD771AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D40647C0-36BB-4D20-835F-C0546951CC0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D40647C0-36BB-4D20-835F-C0546951CC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D40647C0-36BB-4D20-835F-C0546951CC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D40647C0-36BB-4D20-835F-C0546951CC0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9BBF30C-33CB-4A86-AB5C-311C6AD771AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9BBF30C-33CB-4A86-AB5C-311C6AD771AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9BBF30C-33CB-4A86-AB5C-311C6AD771AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9BBF30C-33CB-4A86-AB5C-311C6AD771AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {546029DB-57F4-4378-8F90-798D08D506AD}
+	EndGlobalSection
+EndGlobal
