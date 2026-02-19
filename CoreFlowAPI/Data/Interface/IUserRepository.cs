@@ -5,8 +5,8 @@ namespace CoreFlowAPI.Data.Interface
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<UserDTO>> GetAllAsync();
-        Task<UserDTO?> GetByIdAsync(int id);
-        Task<int> CreateAsync(UserDTO user);
+        Task<IEnumerable<User>> GetAllAsync();
+        Task<User?> GetByIdAsync(int id);
+        Task<int> CreateAsync(User user);
     }
 }

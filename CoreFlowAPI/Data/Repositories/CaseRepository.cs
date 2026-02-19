@@ -17,7 +17,7 @@ namespace CoreFlowAPI.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<int> CreateAsync(CaseDTO @case)
+        public async Task<int> CreateAsync(Case @case,Employee employee,List<Account> accounts)
         {
             using var connection = _dbContext.CreateConnection();
 
@@ -31,17 +31,17 @@ namespace CoreFlowAPI.Data.Repositories
 
             var employeeId = await connection.QuerySingleAsync<int>(sql, new
             {
-                FirstName = @case.Employee.FirstName,
-                LastName = @case.Employee.LastName,
-                Title = @case.Employee.Title.ToString(),
-                PersonalId = @case.Employee.PersonalId.Split('-').First(),
-                PersonalIdLastDigits = @case.Employee.PersonalId.Split('-').Last(),
-                PhoneNumber = @case.Employee.PhoneNumber,
-                Company = @case.Employee.Company.ToString(),
-                Department = @case.Employee.Department,
-                StartDate = @case.Employee.StartDate,
-                EndDate = @case.Employee.EndDate,
-                DateOfEmployment = @case.Employee.DateOfEmployment,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title.ToString(),
+                PersonalId = employee.PersonalId,
+                PersonalIdLastDigits = employee.PersonalIdLastDigits,
+                PhoneNumber = employee.PhoneNumber,
+                Company = employee.Company.ToString(),
+                Department = employee.Department,
+                StartDate = employee.StartDate,
+                EndDate = employee.EndDate,
+                DateOfEmployment = employee.DateOfEmployment,
                 UserId = @case.CreatedByUser,
             });
 
@@ -60,7 +60,7 @@ namespace CoreFlowAPI.Data.Repositories
                 EmployeeId = employeeId,
                 CreatedByUser = @case.CreatedByUser
             });
-            foreach (var account in @case.Employee.Accounts) 
+            foreach (var account in accounts) 
             {
                 sql = @"
                 INSERT INTO dbo.Accounts (UserName,Info,SystemAccessId,Status,EmployeeId)
@@ -136,6 +136,65 @@ namespace CoreFlowAPI.Data.Repositories
                     return currentCase;
                 },
                 splitOn:"EmployeeId,AccountId"
+                    );
+            return caseDictionary.Values.ToList();
+        }
+
+        public async Task<IEnumerable<CaseDTO>> GetAllAsync(StatusOfCase status)
+        {
+            var sql = @"SELECT 
+                c.Id,
+                c.Type,
+                c.Status,
+                c.CreatedByUser,
+                c.EmployeeId,
+                e.FirstName,
+                e.LastName,
+                e.Title,
+                e.PersonalId,
+                e.PersonalIdLastDigits,
+                e.PhoneNumber, 
+                e.Company,
+                e.Department,
+                e.StartDate,
+                e.EndDate,
+                e.DateOfEmployment,
+                e.UserId,
+                a.Id,
+                a.Id as AccountId,
+                a.UserName,
+                a.Info,
+                a.SystemAccessId,
+                a.Status,
+                a.EmployeeId
+                FROM Cases c
+                inner join Employees e On c.EmployeeId = e.Id
+                left join Accounts a On a.EmployeeId = e.Id
+                where c.Status = @status";
+
+            var caseDictionary = new Dictionary<int, CaseDTO>();
+            using var connection = _dbContext.CreateConnection();
+            await connection.QueryAsync<Case, Employee, Account, CaseDTO>(
+               sql, (obj, employee, account) =>
+               {
+                   if (!caseDictionary.TryGetValue(obj.Id, out var currentCase))
+                   {
+                       currentCase = _mapper.Map<CaseDTO>(obj);
+                       currentCase.Employee = _mapper.Map<EmployeeDTO>(employee);
+                       currentCase.Employee.Accounts = new List<AccountDTO>();
+                       caseDictionary.Add(obj.Id, currentCase);
+
+                   }
+
+                   if (account != null && account.SystemAccessId != 0)
+                   {
+                       currentCase.Employee.Accounts.Add(_mapper.Map<AccountDTO>(account));
+                   }
+
+                   return currentCase;
+               },
+               new { Status = status },
+                splitOn: "EmployeeId,AccountId"
                     );
             return caseDictionary.Values.ToList();
         }
