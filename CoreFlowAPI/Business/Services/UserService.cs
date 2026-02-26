@@ -10,14 +10,17 @@ namespace CoreFlowAPI.Business.Services
     {
         IUserRepository _repo;
         IMapper _mapper;
+        IValidationService _validation;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(IUserRepository repository, IMapper mapper, IValidationService validation)
         {
             _repo = repository;
             _mapper = mapper;
+            _validation = validation;
         }
         public async Task<int> CreateAsync(UserDTO user)
         {
+            await _validation.ValidateAndThrowAsync(user);
             var model = _mapper.Map<User>(user);
             return await _repo.CreateAsync(model);
         }

@@ -98,9 +98,9 @@ namespace CoreFlowAPI.Data.Infrastructure
         IF NOT EXISTS(select top 1 * from dbo.SystemAccessProfile)
         BEGIN 
                 INSERT INTO dbo.SystemAccessProfile(Name)
-                VALUES('Profile1');
+                VALUES('Säljare');
         INSERT INTO dbo.SystemAccessProfile(Name)
-                VALUES('Profil2');
+                VALUES('Handläggare');
         END    
 
         """;

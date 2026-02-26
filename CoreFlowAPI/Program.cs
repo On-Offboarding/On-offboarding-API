@@ -28,6 +28,8 @@ namespace CoreFlowAPI
             });
              
             builder.Services.AddDataAccess(builder.Configuration);
+            builder.Services.AddApplicationServices(builder.Configuration);
+            builder.Services.AddValidators(builder.Configuration);
 
             builder.Services.AddAutoMapper(cfg =>
             {

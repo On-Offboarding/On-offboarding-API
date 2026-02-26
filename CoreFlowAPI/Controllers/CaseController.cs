@@ -18,11 +18,17 @@ namespace CoreFlowAPI.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<ActionResult> GetAllCases() { return Ok(await _caseService.GetAllAsync()); }
+        public async Task<ActionResult> GetAllCases() 
+        { 
+            return Ok(await _caseService.GetAllAsync()); 
+        }
 
         [HttpGet]
         [Route("GetAllByStatus")]
-        public async Task<ActionResult> GetAllCases(StatusOfCase status) { return Ok(await _caseService.GetAllAsync(status)); }
+        public async Task<ActionResult> GetAllCases(StatusOfCase status) 
+        { 
+            return Ok(await _caseService.GetAllAsync(status)); 
+        }
 
         [HttpGet]
         [Route("Get/{id}")]
