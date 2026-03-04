@@ -16,12 +16,12 @@ namespace CoreFlowAPI.Data.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<SystemAccessDTO>> GetAllAsync()
+        public async Task<IEnumerable<SystemAccess>> GetAllAsync()
         {
             using var connection = _dbContext.CreateConnection();
             var list = await connection.QueryAsync<SystemAccess>(
                 "select Id, Name from dbo.SystemAccesses");
-            return _mapper.Map<IEnumerable<SystemAccessDTO>>(list);
+            return _mapper.Map<IEnumerable<SystemAccess>>(list);
         }
 
         public async Task<IEnumerable<ProfileSystemAccessDTO>> GetAllProfilesAsync()

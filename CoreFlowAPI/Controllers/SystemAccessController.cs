@@ -1,4 +1,5 @@
-﻿using CoreFlowAPI.Data.Interface;
+﻿using CoreFlowAPI.Business.Interface;
+using CoreFlowAPI.Data.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,19 +9,19 @@ namespace CoreFlowAPI.Controllers
     [ApiController]
     public class SystemAccessController : ControllerBase
     {
-        private readonly ISystemAccessRepository _systemAccessContext;
+        private readonly ISystemAccessService _systemAccessService;
 
-        public SystemAccessController(ISystemAccessRepository systemAccessContext)
+        public SystemAccessController(ISystemAccessService systemAccessService)
         {
-            _systemAccessContext = systemAccessContext;
+            _systemAccessService = systemAccessService;
         }
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<ActionResult> GetAllSystemAccesses() { return Ok(await _systemAccessContext.GetAllAsync()); }
+        public async Task<ActionResult> GetAllSystemAccesses() { return Ok(await _systemAccessService.GetAllAsync()); }
 
         [HttpGet]
         [Route("Profiles/GetAll")]
-        public async Task<ActionResult> GetAllProfilesAsync() { return Ok(await _systemAccessContext.GetAllProfilesAsync()); }
+        public async Task<ActionResult> GetAllProfilesAsync() { return Ok(await _systemAccessService.GetAllProfilesAsync()); }
     }
 }

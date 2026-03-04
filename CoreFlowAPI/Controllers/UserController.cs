@@ -1,4 +1,5 @@
-﻿using CoreFlowAPI.Data.Interface;
+﻿using CoreFlowAPI.Business.Interface;
+using CoreFlowAPI.Data.Interface;
 using CoreFlowSharedLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,21 +9,21 @@ namespace CoreFlowAPI.Controllers
     [Route("Api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userContext;
-        public UserController(IUserRepository userContext)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _userContext = userContext;
+            _userService = userService;
         }
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<ActionResult> GetAllUsers() { return Ok(await _userContext.GetAllAsync()); }
+        public async Task<ActionResult> GetAllUsers() { return Ok(await _userService.GetAllAsync()); }
 
         [HttpGet]
         [Route("Get/{id}")]
         public async Task<ActionResult> Get(int id) 
         {
-            var user = await _userContext.GetByIdAsync(id);
+            var user = await _userService.GetByIdAsync(id);
 
             if (user == null)
             {
@@ -35,7 +36,7 @@ namespace CoreFlowAPI.Controllers
         [Route("Create")]
         public async Task<ActionResult> CreateUser(UserDTO user) 
         {
-            var created = await _userContext.CreateAsync(user);
+            var created = await _userService.CreateAsync(user);
 
             if(created is 0)
             {

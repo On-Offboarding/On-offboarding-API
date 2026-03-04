@@ -30,7 +30,7 @@ namespace CoreFlowAPI.Data.Infrastructure
                 VALUES('Coface');
                 INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('Allianz');
-                INSERT INTO dbo.SystemAccess(Name)
+                INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('HubSpot');
                 INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('Scrive');
@@ -76,7 +76,7 @@ namespace CoreFlowAPI.Data.Infrastructure
                 VALUES('Azure');
                 INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('Heroku');
-                INSERT INTO dbo.SystemAccess(Name)
+                INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('Hightouch');
                 INSERT INTO dbo.SystemAccesses(Name)
                 VALUES('Finansia.se (Wordpress)');
@@ -98,9 +98,12 @@ namespace CoreFlowAPI.Data.Infrastructure
         IF NOT EXISTS(select top 1 * from dbo.SystemAccessProfile)
         BEGIN 
                 INSERT INTO dbo.SystemAccessProfile(Name)
-                VALUES('Profile1');
+                VALUES('Säljare');
         INSERT INTO dbo.SystemAccessProfile(Name)
-                VALUES('Profil2');
+                VALUES('Handläggare');
+        INSERT INTO dbo.SystemAccessProfile(Name)
+                VALUES('Inkassohandläggare');
+
         END    
 
         """;
@@ -110,9 +113,39 @@ namespace CoreFlowAPI.Data.Infrastructure
         IF NOT EXISTS(select top 1 * from dbo.ProfileSystemAccess )
         BEGIN 
                 INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
-                VALUES(1,2);
+                VALUES(1,1);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(1,23);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(1,24);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(1,33);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,1);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,2);
         INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,4);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,5);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,11);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,12);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,20);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,21);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,22);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(2,32);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(3,1);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(3,16);
+        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                VALUES(3,22);
         END    
 
         """;

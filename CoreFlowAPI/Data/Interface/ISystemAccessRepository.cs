@@ -5,7 +5,7 @@ namespace CoreFlowAPI.Data.Interface
 {
     public interface ISystemAccessRepository
     {
-        Task<IEnumerable<SystemAccessDTO>> GetAllAsync();
+        Task<IEnumerable<SystemAccess>> GetAllAsync();
         Task<IEnumerable<ProfileSystemAccessDTO>> GetAllProfilesAsync();
     }
 }

@@ -15,9 +15,8 @@ namespace CoreFlowAPI.Data.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<int> CreateAsync(UserDTO user)
+        public async Task<int> CreateAsync(User user)
         {
-            var model = _mapper.Map<User>(user);
             using var connection = _dbContext.CreateConnection();
 
             var sql = @"
@@ -28,28 +27,28 @@ namespace CoreFlowAPI.Data.Repositories
 
             return await connection.QuerySingleAsync<int>(sql, new
             {
-                Name = model.Name,
-                Email = model.Email,
-                RoleId = model.RoleId
+                Name = user.Name,
+                Email = user.Email,
+                RoleId = user.RoleId
             });
             
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             using var connection = _dbContext.CreateConnection();
             var models = await connection.QueryAsync<User>(
                 "select Id, Name, Email, RoleId from users");
-            return _mapper.Map<List<UserDTO>>(models);
+            return models;
           
         }
 
-        public async Task<UserDTO?> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
             using var connection = _dbContext.CreateConnection();
-            var model = await connection.QueryFirstOrDefaultAsync<UserDTO>(
+            var model = await connection.QueryFirstOrDefaultAsync<User>(
                 "select Id, Name, Email, RoleId from users where Id = @Id", new { Id = id });
-            return _mapper.Map<UserDTO>(model);
+            return model;
         }
     }
 }
