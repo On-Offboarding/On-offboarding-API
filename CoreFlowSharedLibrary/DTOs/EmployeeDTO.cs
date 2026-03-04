@@ -6,7 +6,7 @@ namespace CoreFlowSharedLibrary.DTOs
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public TitleOfEmployee Title { get; set; }
+        public string? Title { get; set; }
         public required string PersonalId { get; set; }
         public string? PhoneNumber { get; set; }
         public CompanyOfEmployee Company { get; set; }

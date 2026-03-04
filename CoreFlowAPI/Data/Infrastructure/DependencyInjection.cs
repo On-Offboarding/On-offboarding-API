@@ -28,8 +28,14 @@ namespace CoreFlowAPI.Data.Infrastructure
             IConfiguration configuration)
         {
             services.AddScoped<IValidationService, ValidationService>();
+            services.AddValidatorsFromAssemblyContaining<UserDTOValidater>();
+            services.AddValidatorsFromAssemblyContaining<CaseDTOValidater>();
+            services.AddValidatorsFromAssemblyContaining<EmployeeDTOValidater>();
+            services.AddValidatorsFromAssemblyContaining<AccountDTOValidater>();
             services.AddValidatorsFromAssemblyContaining<UserDTO>();
             services.AddValidatorsFromAssemblyContaining<CaseDTO>();
+            services.AddValidatorsFromAssemblyContaining<EmployeeDTO>();
+            services.AddValidatorsFromAssemblyContaining<AccountDTO>();
 
             return services;
         }

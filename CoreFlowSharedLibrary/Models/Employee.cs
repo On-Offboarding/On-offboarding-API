@@ -7,7 +7,7 @@ namespace CoreFlowSharedLibrary.Models
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public TitleOfEmployee Title { get; set; }
+        public string? Title { get; set; }
         public string FullPersonalId { get { return string.Format("{0}-{1}", PersonalId, PersonalIdLastDigits); } }
         public required int PersonalId { get; set; } 
         public required int PersonalIdLastDigits { get; set; }    
