@@ -28,7 +28,12 @@ namespace CoreFlowAPI.Controllers
 
             if (user == null)
             {
-                var error = new ErrorResponse { Message = "No User Found", StatusCode = StatusCodes.Status404NotFound, TraceId = Request.HttpContext.TraceIdentifier };
+                var error = new ErrorResponse 
+                { 
+                    Message = "No User Found",
+                    StatusCode = StatusCodes.Status404NotFound,
+                    TraceId = Request.HttpContext.TraceIdentifier
+                };
                 return NotFound(error);
             }
 

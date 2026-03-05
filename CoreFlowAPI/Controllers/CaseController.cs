@@ -39,7 +39,12 @@ namespace CoreFlowAPI.Controllers
 
             if (caseObj == null)
             {
-                var error = new ErrorResponse { Message = "No Case Found", StatusCode = StatusCodes.Status404NotFound, TraceId = Request.HttpContext.TraceIdentifier };
+                var error = new ErrorResponse 
+                { 
+                    Message = "No Case Found", 
+                    StatusCode = StatusCodes.Status404NotFound, 
+                    TraceId = Request.HttpContext.TraceIdentifier 
+                };
                 return NotFound(error);
             }
 
