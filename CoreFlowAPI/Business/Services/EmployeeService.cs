@@ -1,9 +1,9 @@
-﻿using CoreFlowAPI.Data.Interface;
+﻿using CoreFlowAPI.Business.Interface;
 using CoreFlowSharedLibrary.DTOs;
 
-namespace CoreFlowAPI.Data.Repositories
+namespace CoreFlowAPI.Business.Services
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeService : IEmployeeService
     {
         public Task<IEnumerable<EmployeeDTO>> GetAllAsync()
         {

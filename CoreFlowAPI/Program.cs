@@ -1,10 +1,9 @@
 using AutoMapper;
+using CoreFlowAPI.Business.Middleware;
 using CoreFlowAPI.Data.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
-using System.Reflection;
-using System.Text.Json.Serialization;
+
 
 namespace CoreFlowAPI
 {
@@ -37,7 +36,7 @@ namespace CoreFlowAPI
             });
 
             var app = builder.Build();
-
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -46,11 +45,10 @@ namespace CoreFlowAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

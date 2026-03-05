@@ -22,8 +22,7 @@ namespace CoreFlowAPI.Business.Validation
             RuleFor(x => x.Employee)
                 .SetValidator(validator);
             RuleFor(x => x.CreatedByUser)
-                .MustAsync(UserIdExists)
-                .WithMessage("Invalid UserId");
+                .MustAsync(UserIdExists);
 
         }
         private async Task<bool> UserIdExists(int userId,CancellationToken token)

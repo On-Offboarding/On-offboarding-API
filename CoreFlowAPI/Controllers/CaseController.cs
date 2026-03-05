@@ -1,5 +1,6 @@
 ﻿using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Data.Interface;
+using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,8 @@ namespace CoreFlowAPI.Controllers
 
             if (caseObj == null)
             {
-                return NotFound("No Case Found");
+                var error = new ErrorResponse { Message = "No Case Found", StatusCode = StatusCodes.Status404NotFound, TraceId = Request.HttpContext.TraceIdentifier };
+                return NotFound(error);
             }
 
             return Ok(caseObj);
