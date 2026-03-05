@@ -110,41 +110,41 @@ namespace CoreFlowAPI.Data.Infrastructure
             await conn.ExecuteAsync(sql);
 
             sql = """
-        IF NOT EXISTS(select top 1 * from dbo.ProfileSystemAccess )
+        IF NOT EXISTS(select top 1 * from dbo.SystemAccessProfileToSystemAccess )
         BEGIN 
-                INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+                INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(1,1);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(1,23);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(1,24);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(1,33);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,1);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,2);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,4);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,5);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,11);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,12);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,20);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,21);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,22);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(2,32);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(3,1);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(3,16);
-        INSERT INTO dbo.ProfileSystemAccess (ProfileId,SystemAccessId)
+        INSERT INTO dbo.SystemAccessProfileToSystemAccess (ProfileId,SystemAccessId)
                 VALUES(3,22);
         END    
 
@@ -252,9 +252,9 @@ namespace CoreFlowAPI.Data.Infrastructure
         private static string CreateProfileSystemAccessTable()
         {
             return """
-        IF OBJECT_ID('dbo.ProfileSystemAccess ', 'U') IS NULL
+        IF OBJECT_ID('dbo.SystemAccessProfileToSystemAccess ', 'U') IS NULL
         BEGIN
-            CREATE TABLE dbo.ProfileSystemAccess  (
+            CREATE TABLE dbo.SystemAccessProfileToSystemAccess  (
                 ProfileId INT NOT NULL,
                 SystemAccessId INT NOT NULL
                     PRIMARY KEY (ProfileId, SystemAccessId),

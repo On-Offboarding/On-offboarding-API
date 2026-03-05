@@ -32,7 +32,7 @@ namespace CoreFlowAPI.Data.Repositories
                 sa.Id,
                 sa.Name
             FROM SystemAccessProfile p
-            LEFT JOIN ProfileSystemAccess psa ON psa.ProfileId = p.Id
+            LEFT JOIN SystemAccessProfileToSystemAccess psa ON psa.ProfileId = p.Id
             LEFT JOIN SystemAccesses sa ON sa.Id = psa.SystemAccessId";
 
             var profileDictionary = new Dictionary<int, ProfileSystemAccessDTO>();

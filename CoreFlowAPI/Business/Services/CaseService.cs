@@ -11,18 +11,21 @@ namespace CoreFlowAPI.Business.Services
     {
         ICaseRepository _repo;
         IMapper _mapper;
+        IValidationService _validation;
 
-        public CaseService(ICaseRepository repository, IMapper mapper)
+        public CaseService(ICaseRepository repository, IMapper mapper, IValidationService validation)
         {
             _repo = repository;
             _mapper = mapper;
+            _validation = validation;
         }
-        public async Task<int> CreateAsync(CaseDTO @case)
+        public async Task<int> CreateAsync(CaseDTO obj)
         {
-            var model = _mapper.Map<Case>(@case);
-            var employeeModel = _mapper.Map<Employee>(@case.Employee);
+            await _validation.ValidateAndThrowAsync(obj);
+            var model = _mapper.Map<Case>(obj);
+            var employeeModel = _mapper.Map<Employee>(obj.Employee);
             var accountsModel = new List<Account>();
-            foreach (var account in @case.Employee.Accounts)
+            foreach (var account in obj.Employee.Accounts)
             {
                 accountsModel.Add(_mapper.Map<Account>(account));
             }

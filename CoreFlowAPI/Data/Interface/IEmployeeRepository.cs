@@ -1,6 +1,12 @@
-﻿namespace CoreFlowAPI.Data.Interface
+﻿using CoreFlowSharedLibrary.DTOs;
+using CoreFlowSharedLibrary.Models;
+
+namespace CoreFlowAPI.Data.Interface
 {
-    public class IEmployeeRepository
+    public interface IEmployeeRepository
     {
+        Task<IEnumerable<EmployeeDTO>> GetAllAsync();
+
+        Task<EmployeeDTO?> GetByIdAsync(int id);
     }
 }

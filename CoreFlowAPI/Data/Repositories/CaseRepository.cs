@@ -33,7 +33,7 @@ namespace CoreFlowAPI.Data.Repositories
             {
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Title = employee.Title.ToString(),
+                Title = employee.Title,
                 PersonalId = employee.PersonalId,
                 PersonalIdLastDigits = employee.PersonalIdLastDigits,
                 PhoneNumber = employee.PhoneNumber,

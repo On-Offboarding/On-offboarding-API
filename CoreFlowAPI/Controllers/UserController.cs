@@ -1,5 +1,6 @@
 ﻿using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Data.Interface;
+using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,13 @@ namespace CoreFlowAPI.Controllers
 
             if (user == null)
             {
-                return NotFound("No User Found");
+                var error = new ErrorResponse 
+                { 
+                    Message = "No User Found",
+                    StatusCode = StatusCodes.Status404NotFound,
+                    TraceId = Request.HttpContext.TraceIdentifier
+                };
+                return NotFound(error);
             }
 
             return Ok(user); 
