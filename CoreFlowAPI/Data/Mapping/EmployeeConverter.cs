@@ -10,8 +10,6 @@ namespace CoreFlowAPI.Data.Mapping
     { 
         public EmployeeConverter() 
         {
-            CreateMap<string, TitleOfEmployee>()
-                .ConvertUsing<StringToTitleOfEmployeeConverter>();
 
             CreateMap<EmployeeDTO, Employee>()
                 .ForMember(

@@ -3,6 +3,7 @@ using CoreFlowAPI.Business.Services;
 using CoreFlowAPI.Business.Validation;
 using CoreFlowAPI.Data.Context;
 using CoreFlowAPI.Data.Interface;
+using CoreFlowAPI.Data.Mapping.MappingResolvers;
 using CoreFlowAPI.Data.Mapping.TypeConverters;
 using CoreFlowAPI.Data.Repositories;
 using CoreFlowSharedLibrary.DTOs;
@@ -20,7 +21,8 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISystemAccessRepository, SystemAccessRepository>();
             services.AddScoped<ICaseRepository, CaseRepository>();
-            
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
             return services;
 
         }
@@ -46,10 +48,13 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<ICaseService, CaseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISystemAccessService, SystemAccessService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IntToTypeOfCaseConverter>();
             services.AddScoped<IntToStatusOfCaseConverter>();
             services.AddScoped<IntToStatusOfAccountConverter>();
             services.AddScoped<StringToTitleOfEmployeeConverter>();
+            services.AddScoped<BirthDatePartResolver>();
+            services.AddScoped<PersonalIdLastDigitsResolver>();
 
             return services;
         }

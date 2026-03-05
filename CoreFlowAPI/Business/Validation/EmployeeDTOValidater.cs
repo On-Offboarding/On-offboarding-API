@@ -15,12 +15,11 @@ namespace CoreFlowAPI.Business.Validation
             RuleFor(x => x.LastName)
                 .NotEmpty()
                 .MaximumLength(100);
-            RuleFor(x => x.Title)
-                 .NotEmpty()   
+            RuleFor(x => x.Title) 
                 .MaximumLength(25);
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()
-                .Matches(@"^\0\d{7,15}$");
+                .Matches(@"^(?:\+46|0)\s?7[02369]\d{7}$");
             RuleFor(x => x.PersonalId)
                 .NotEmpty()
                 .Length(13)

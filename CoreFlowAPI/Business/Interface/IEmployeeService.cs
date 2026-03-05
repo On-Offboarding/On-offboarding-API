@@ -8,5 +8,7 @@ namespace CoreFlowAPI.Business.Interface
     public interface IEmployeeService
     {
         Task<IEnumerable<EmployeeDTO>> GetAllAsync();
+
+        Task<EmployeeDTO?> GetByIdAsync(int id);
     }
 }

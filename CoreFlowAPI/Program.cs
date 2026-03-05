@@ -24,6 +24,7 @@ namespace CoreFlowAPI
             builder.Services.AddSwaggerGen(opt =>
             {
                 opt.SchemaFilter<EnumSchemaFilter>();
+                // opt.EnableAnnotations();
             });
              
             builder.Services.AddDataAccess(builder.Configuration);
