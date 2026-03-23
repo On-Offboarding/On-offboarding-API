@@ -1,9 +1,11 @@
 using AutoMapper;
+using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Business.Middleware;
+using CoreFlowAPI.Business.Services;
 using CoreFlowAPI.Data.Infrastructure;
+using CoreFlowSharedLibrary.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-
 
 namespace CoreFlowAPI
 {
@@ -13,19 +15,25 @@ namespace CoreFlowAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // 1. Autentisering
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-            builder.Services.AddControllers();
+            // 2. Controllers & JSON-inställningar (Flyttat från första programmet)
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                // Gör att Enums visas som strängar istället för siffror
+                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+            });
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // 3. Swagger & Schema
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(opt =>
             {
                 opt.SchemaFilter<EnumSchemaFilter>();
             });
-             
+
+            // 4. Core Services
             builder.Services.AddDataAccess(builder.Configuration);
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddValidators(builder.Configuration);
@@ -35,9 +43,33 @@ namespace CoreFlowAPI
                 cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
             });
 
+            // 5. CORS-Policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
+            // 6. HttpClient & Email Integration
+            builder.Services.AddHttpClient("EmailApi", client =>
+            {
+                client.BaseAddress = new Uri(builder.Configuration["EmailApi:BaseUrl"] ?? "https://localhost:7012");
+                client.Timeout = TimeSpan.FromSeconds(30);
+            });
+
+            //services
+            builder.Services.AddScoped<ICaseService, CaseService>();
+            builder.Services.AddScoped<IEmailIntegrationService, EmailIntegrationService>();
+
+
             var app = builder.Build();
-            
-            // Configure the HTTP request pipeline.
+
+            // --- Middleware Pipeline ---
+
             if (app.Environment.IsDevelopment())
             {
                 await DatabaseInitializer.InitAsync(app.Configuration);
@@ -45,9 +77,12 @@ namespace CoreFlowAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseHttpsRedirection();
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseCors("AllowReactApp");
+
+            app.UseHttpsRedirection();
             app.UseAuthorization();
 
             app.MapControllers();
