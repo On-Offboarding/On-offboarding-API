@@ -33,8 +33,7 @@ namespace CoreFlowAPI.Business.Validation
                 .NotEmpty()
                 .MaximumLength(25);
             RuleFor(x => x.StartDate)
-                .NotEmpty()
-                .GreaterThanOrEqualTo(DateTime.Today);
+                .NotEmpty();
             RuleFor(x => x.EndDate)
                 .GreaterThanOrEqualTo(x => x.StartDate)
                 .When(x => x.EndDate.HasValue);
