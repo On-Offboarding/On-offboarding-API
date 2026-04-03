@@ -10,4 +10,8 @@
     <None Include="Enums\StatusOfAccount.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Export\" />
+  </ItemGroup>
+
 </Project>

@@ -10,5 +10,9 @@ namespace CoreFlowAPI.Business.Interface
         Task<IEnumerable<EmployeeDTO>> GetAllAsync();
 
         Task<EmployeeDTO?> GetByIdAsync(int id);
+
+        Task<bool> DeleteEmployeesAccordingToGDPR(DateTime? endDate = null);
     }
+
+
 }

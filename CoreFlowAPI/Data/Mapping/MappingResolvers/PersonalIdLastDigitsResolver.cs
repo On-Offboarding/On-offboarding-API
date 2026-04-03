@@ -4,15 +4,34 @@ using CoreFlowSharedLibrary.Models;
 
 namespace CoreFlowAPI.Data.Mapping.MappingResolvers
 {
-    public class PersonalIdLastDigitsResolver : IValueResolver<EmployeeDTO, Employee, int>
+    public class PersonalIdLastDigitsResolver : IValueResolver<object, Employee, int>
     {
-        public int Resolve(EmployeeDTO source, Employee destination, int destMember, ResolutionContext context)
+        public int Resolve(object source, Employee destination, int destMember, ResolutionContext context)
         {
-            if (string.IsNullOrEmpty(source.PersonalId))
-                return 0;
+            if(source is EmployeeDTO)
+            {
+                var model = source as EmployeeDTO;
+                if (model != null) {
+                    if (string.IsNullOrEmpty(model.PersonalId))
+                        return 0;
 
-            var parts = source.PersonalId.Split('-');
-            return parts.Length > 1 && int.TryParse(parts[1], out var n) ? n : 0;
+                    var parts = model.PersonalId.Split('-');
+                    return parts.Length > 1 && int.TryParse(parts[1], out var n) ? n : 0;
+                }
+            }
+            if(source is CreateEmployeeDTO)
+            {
+                var model = source as CreateEmployeeDTO;
+                if (model != null)
+                {
+                    if (string.IsNullOrEmpty(model.PersonalId))
+                        return 0;
+
+                    var parts = model.PersonalId.Split('-');
+                    return parts.Length > 1 && int.TryParse(parts[1], out var n) ? n : 0;
+                }
+            }
+            return 0000;
         }
     }
 }

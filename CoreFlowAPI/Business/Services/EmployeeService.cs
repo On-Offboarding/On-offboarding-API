@@ -23,5 +23,11 @@ namespace CoreFlowAPI.Business.Services
         {
             return _repo.GetByIdAsync(id);
         }
+
+        public Task<bool> DeleteEmployeesAccordingToGDPR(DateTime? endDate = null)
+        {
+            if (endDate == null) { endDate = DateTime.Now.AddMonths(-2); }
+            return _repo.DeleteEmployeesAccordingToGDPR(endDate);
+        }
     }
 }

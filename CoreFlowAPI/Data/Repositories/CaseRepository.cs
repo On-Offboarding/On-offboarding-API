@@ -257,5 +257,97 @@ namespace CoreFlowAPI.Data.Repositories
                     );
             return caseDictionary.Values.FirstOrDefault();
         }
+
+        public async Task<bool> UpdateAsync(Case @case, Employee employee, List<Account> accounts)
+        {
+            try
+            {
+                using var connection = _dbContext.CreateConnection();
+
+                var sql = @"
+             UPDATE dbo.Employees
+             SET
+                FirstName = @FirstName,
+                LastName = @LastName,
+                Title = @Title,
+                PersonalId = @PersonalId,
+                PersonalIdLastDigits = @PersonalIdLastDigits,
+                PhoneNumber = @PhoneNumber,
+                Company = @Company,
+                Department = @Department,
+                Startdate = @StartDate,
+                EndDate = @EndDate,
+                DateOfEmployment = @DateofEmployment,
+                UserId = @UserId
+                WHERE Id = @EmployeeId;
+             ";
+
+                await connection.ExecuteAsync(sql, new
+                {
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Title = employee.Title,
+                    PersonalId = employee.PersonalId,
+                    PersonalIdLastDigits = employee.PersonalIdLastDigits,
+                    PhoneNumber = employee.PhoneNumber,
+                    Company = employee.Company.ToString(),
+                    Department = employee.Department,
+                    StartDate = employee.StartDate,
+                    EndDate = employee.EndDate,
+                    DateOfEmployment = employee.DateOfEmployment,
+                    UserId = @case.CreatedByUser,
+                    EmployeeId = employee.Id
+                });
+
+
+
+                sql = @"
+             UPDATE dbo.Cases
+             SET 
+                Type = @Type,
+                Status = @Status,
+                EmployeeId = @EmployeeId,
+                CreatedByUser = @CreatedByUser
+                WHERE Id = @Id;
+             ";
+
+                await connection.ExecuteAsync(sql, new
+                {
+                    Id = @case.Id,
+                    Type = @case.Type,
+                    Status = @case.Status,
+                    EmployeeId = employee.Id,
+                    CreatedByUser = @case.CreatedByUser
+                });
+
+                sql = @"DELETE FROM dbo.Accounts WHERE EmployeeId = @EmployeeId;";
+                await connection.ExecuteAsync(sql, new
+                {
+                    EmployeeId = employee.Id
+                });
+
+                foreach (var account in accounts)
+                {
+                    sql = @"
+                        INSERT INTO dbo.Accounts (UserName,Info,SystemAccessId,Status,EmployeeId)
+                        VALUES (@UserName, @Info, @SystemAccessId, @Status,@EmployeeId);
+                    ";
+
+                    await connection.ExecuteAsync(sql, new
+                    {
+                        UserName = account.UserName,
+                        Info = account.Info,
+                        SystemAccessId = account.SystemAccessId,
+                        Status = account.Status,
+                        EmployeeId = employee.Id
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

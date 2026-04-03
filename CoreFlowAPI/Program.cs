@@ -1,6 +1,8 @@
 using AutoMapper;
 using CoreFlowAPI.Business.Middleware;
 using CoreFlowAPI.Data.Infrastructure;
+using CoreFlowAPI.Data.Interface;
+using CoreFlowAPI.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
@@ -29,7 +31,7 @@ namespace CoreFlowAPI
             builder.Services.AddDataAccess(builder.Configuration);
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddValidators(builder.Configuration);
-
+            builder.Services.AddScoped<ICaseRepository, CaseRepository>();
             builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies());

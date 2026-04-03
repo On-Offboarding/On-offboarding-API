@@ -5,9 +5,9 @@ using Personnummer;
 
 namespace CoreFlowAPI.Business.Validation
 {
-    public class EmployeeDTOValidater : AbstractValidator<EmployeeDTO>
+    public class CreateEmployeeDTOValidater : AbstractValidator<EmployeeDTO>
     {
-        public EmployeeDTOValidater(IValidator<AccountDTO> validator) 
+        public CreateEmployeeDTOValidater(IValidator<AccountDTO> validator) 
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty()
@@ -33,7 +33,8 @@ namespace CoreFlowAPI.Business.Validation
                 .NotEmpty()
                 .MaximumLength(25);
             RuleFor(x => x.StartDate)
-                .NotEmpty();
+                .NotEmpty()
+                .GreaterThanOrEqualTo(DateTime.Today);
             RuleFor(x => x.EndDate)
                 .GreaterThanOrEqualTo(x => x.StartDate)
                 .When(x => x.EndDate.HasValue);

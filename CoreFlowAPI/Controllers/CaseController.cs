@@ -12,9 +12,11 @@ namespace CoreFlowAPI.Controllers
     public class CaseController : ControllerBase
     {
         private readonly ICaseService _caseService;
-        public CaseController(ICaseService caseService)
+        private readonly IExcelService _excelService;
+        public CaseController(ICaseService caseService, IExcelService excelService)
         {
-            _caseService = caseService;  
+            _caseService = caseService;
+            _excelService = excelService;
         }
 
         [HttpGet]
@@ -53,7 +55,7 @@ namespace CoreFlowAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult> CreateCase(CaseDTO obj)
+        public async Task<ActionResult> CreateCase(CreateCaseDTO obj)
         {
             var created = await _caseService.CreateAsync(obj);
 
@@ -65,7 +67,38 @@ namespace CoreFlowAPI.Controllers
             return Ok(new { Id = created });
         }
 
+        [HttpPut]
+        [Route("Update")]
+        public async Task<ActionResult> UpdateCase(CaseDTO obj)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var result = await _caseService.UpdateAsync(obj);
+
+            if (!result)
+            {
+                var error = new ErrorResponse
+                {
+                    Message = "No Case Found",
+                    StatusCode = StatusCodes.Status404NotFound,
+                    TraceId = Request.HttpContext.TraceIdentifier
+                };
+                return NotFound(error);
+            }
+            
+            return Ok(obj);
+        }
+
+
+        [HttpGet]
+        [Route("Export")]
+        public async Task<ActionResult> Export(int id) 
+        {
+            var export = await _caseService.GetAllAsync();
+            var file = _excelService.ExportToExcel(export);
+            return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Cases.xlsx");
+        }
 
     }
 }

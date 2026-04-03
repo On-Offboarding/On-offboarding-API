@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Data.Interface;
+using CoreFlowAPI.Data.Repositories;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Enums;
 using CoreFlowSharedLibrary.Models;
@@ -19,19 +20,48 @@ namespace CoreFlowAPI.Business.Services
             _mapper = mapper;
             _validation = validation;
         }
-        public async Task<int> CreateAsync(CaseDTO obj)
+        public async Task<int> CreateAsync(CreateCaseDTO dto)
         {
-            await _validation.ValidateAndThrowAsync(obj);
-            var model = _mapper.Map<Case>(obj);
-            var employeeModel = _mapper.Map<Employee>(obj.Employee);
+            await _validation.ValidateAndThrowAsync(dto);
+            var model = _mapper.Map<Case>(dto);
+            var employeeModel = _mapper.Map<Employee>(dto.Employee);
             var accountsModel = new List<Account>();
-            foreach (var account in obj.Employee.Accounts)
+            if (dto.Employee.Accounts != null && dto.Employee.Accounts.Count > 0)
             {
-                accountsModel.Add(_mapper.Map<Account>(account));
+                foreach (var account in dto.Employee.Accounts)
+                {
+                    accountsModel.Add(_mapper.Map<Account>(account));
+                } 
             }
 
             return await _repo.CreateAsync(model,employeeModel,accountsModel);
         }
+
+        
+        public async Task<bool> UpdateAsync(CaseDTO dto)
+        {
+            await _validation.ValidateAndThrowAsync(dto);
+            var existing = await _repo.GetByIdAsync(dto.Id);
+            if (existing == null)
+                return false;
+
+            var caseModel = _mapper.Map<Case>(dto);
+            var employeeModel = _mapper.Map<Employee>(dto.Employee);
+            var accountsModel = new List<Account>();
+
+            employeeModel.Id = existing.Employee.Id;
+            if (dto.Employee.Accounts != null && dto.Employee.Accounts.Count > 0)
+            {
+                foreach (var account in dto.Employee.Accounts)
+                {
+                    accountsModel.Add(_mapper.Map<Account>(account));
+                }
+            }
+
+            return await _repo.UpdateAsync(caseModel, employeeModel, accountsModel);
+
+        }
+
 
         public Task<IEnumerable<CaseDTO>> GetAllAsync()
         {
@@ -42,9 +72,12 @@ namespace CoreFlowAPI.Business.Services
             return _repo.GetAllAsync(status);
         }
 
-        public Task<CaseDTO?> GetByIdAsync(int id)
+        public async Task<CaseDTO?> GetByIdAsync(int id)
         {
-            return _repo.GetByIdAsync(id);
+            var entity = await _repo.GetByIdAsync(id);
+            if (entity == null)
+                return null;
+            return _mapper.Map<CaseDTO>(entity);
         }
     }
 }
