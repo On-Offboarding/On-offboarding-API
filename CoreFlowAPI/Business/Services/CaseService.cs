@@ -31,7 +31,7 @@ namespace CoreFlowAPI.Business.Services
             _logger = logger;
         }
 
-        public async Task<int> CreateAsync(CaseDTO obj)
+        public async Task<int> CreateAsync(CreateCaseDTO obj)
         {
             
             await _validation.ValidateAndThrowAsync(obj);
@@ -47,18 +47,20 @@ namespace CoreFlowAPI.Business.Services
 
 
             var createdId = await _repo.CreateAsync(model, employeeModel, accountsModel);
-
+            
             // 4. Skicka email i bakgrunden om allt gick bra
             if (createdId > 0)
             {
-                await SendEmailInternalAsync(obj, createdId);
+                var created = await _repo.GetByIdAsync(createdId);
+                if (created != null)
+                    await SendEmailInternalAsync(created);
             }
 
             return createdId;
         }
 
 
-        private async Task SendEmailInternalAsync(CaseDTO caseDto, int caseId)
+        private async Task SendEmailInternalAsync(CaseDTO caseDto)
         {
             try
             {
@@ -106,11 +108,11 @@ namespace CoreFlowAPI.Business.Services
                     });
                 }
 
-                _logger.LogInformation("Email skickat framgångsrikt för Case {CaseId} via CaseService", caseId);
+                _logger.LogInformation("Email skickat framgångsrikt för Case {CaseId} via CaseService", caseDto.Id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Misslyckades att skicka email för Case {CaseId} i CaseService", caseId);
+                _logger.LogError(ex, "Misslyckades att skicka email för Case {CaseId} i CaseService", caseDto.Id);
             }
         }
 

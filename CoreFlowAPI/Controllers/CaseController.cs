@@ -54,7 +54,7 @@ namespace CoreFlowAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult> CreateCase([FromBody] CaseDTO obj)
+        public async Task<ActionResult> CreateCase([FromBody] CreateCaseDTO obj)
         {
             
             var createdId = await _caseService.CreateAsync(obj);
