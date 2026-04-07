@@ -1,5 +1,4 @@
 ﻿using CoreFlowAPI.Business.Interface;
-using CoreFlowAPI.Data.Interface;
 using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Enums;
@@ -12,25 +11,25 @@ namespace CoreFlowAPI.Controllers
     public class CaseController : ControllerBase
     {
         private readonly ICaseService _caseService;
-        private readonly IExcelService _excelService;
-        public CaseController(ICaseService caseService, IExcelService excelService)
+
+    
+        public CaseController(ICaseService caseService)
         {
             _caseService = caseService;
-            _excelService = excelService;
         }
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<ActionResult> GetAllCases() 
-        { 
-            return Ok(await _caseService.GetAllAsync()); 
+        public async Task<ActionResult> GetAllCases()
+        {
+            return Ok(await _caseService.GetAllAsync());
         }
 
         [HttpGet]
         [Route("GetAllByStatus")]
-        public async Task<ActionResult> GetAllCases(StatusOfCase status) 
-        { 
-            return Ok(await _caseService.GetAllAsync(status)); 
+        public async Task<ActionResult> GetAllCases(StatusOfCase status)
+        {
+            return Ok(await _caseService.GetAllAsync(status));
         }
 
         [HttpGet]
@@ -41,11 +40,11 @@ namespace CoreFlowAPI.Controllers
 
             if (caseObj == null)
             {
-                var error = new ErrorResponse 
-                { 
-                    Message = "No Case Found", 
-                    StatusCode = StatusCodes.Status404NotFound, 
-                    TraceId = Request.HttpContext.TraceIdentifier 
+                var error = new ErrorResponse
+                {
+                    Message = "No Case Found",
+                    StatusCode = StatusCodes.Status404NotFound,
+                    TraceId = Request.HttpContext.TraceIdentifier
                 };
                 return NotFound(error);
             }
@@ -55,50 +54,21 @@ namespace CoreFlowAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult> CreateCase(CreateCaseDTO obj)
+        public async Task<ActionResult> CreateCase([FromBody] CaseDTO obj)
         {
-            var created = await _caseService.CreateAsync(obj);
-
-            if (created is 0)
-            {
-                return BadRequest();
-            }
-
-            return Ok(new { Id = created });
-        }
-
-        [HttpPut]
-        [Route("Update")]
-        public async Task<ActionResult> UpdateCase(CaseDTO obj)
-        {
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _caseService.UpdateAsync(obj);
-
-            if (!result)
-            {
-                var error = new ErrorResponse
-                {
-                    Message = "No Case Found",
-                    StatusCode = StatusCodes.Status404NotFound,
-                    TraceId = Request.HttpContext.TraceIdentifier
-                };
-                return NotFound(error);
-            }
             
-            return Ok(obj);
+            var createdId = await _caseService.CreateAsync(obj);
+
+            if (createdId == 0)
+            {
+                return BadRequest(new { Message = "Kunde inte skapa case" });
+            }
+
+            return Ok(new
+            {
+                Id = createdId,
+                Message = "Case skapad framgångsrikt"
+            });
         }
-
-
-        [HttpGet]
-        [Route("Export")]
-        public async Task<ActionResult> Export(int id) 
-        {
-            var export = await _caseService.GetAllAsync();
-            var file = _excelService.ExportToExcel(export);
-            return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Cases.xlsx");
-        }
-
     }
 }
