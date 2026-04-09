@@ -2,9 +2,11 @@
 
 namespace CoreFlowAPI.Business.Interface
 {
-    public interface IAuditService
+    public interface IAuditLogService
     {
-        Task<List<AuditLogDTO>> GetAllAudits();
-        Task<int> Create(AuditLogDTO logDTO); 
+        Task<List<AuditLogViewDTO>> GetAllAuditsAsync();
+        Task<int> CreateCaseAsync(CaseDTO dTO);
+        Task<int> UpdateCaseAsync(CaseDTO dTO);
+        
     }
 }

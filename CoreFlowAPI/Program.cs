@@ -60,7 +60,6 @@ namespace CoreFlowAPI
                 client.BaseAddress = new Uri(builder.Configuration["EmailApi:BaseUrl"] ?? "https://localhost:7012");
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
- 
 
             var app = builder.Build();
 

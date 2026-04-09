@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CoreFlowAPI.Business.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
@@ -7,11 +8,16 @@ namespace CoreFlowAPI.Controllers
     [ApiController]
     public class AuditController : ControllerBase
     {
+        IAuditLogService auditLogService;
+        public AuditController(IAuditLogService service) 
+        {
+            auditLogService = service;
+        }
         [HttpGet]
         [Route("GetAll")]
         public async Task<ActionResult> GetAllAudits()
         {
-            return NotFound("ok");
+            return Ok(await auditLogService.GetAllAuditsAsync());
         }
     }
 }

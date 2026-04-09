@@ -4,8 +4,8 @@ namespace CoreFlowAPI.Data.Interface
 {
     public interface IAuditLogRepository
     {
-        Task<int> Create(AuditLog log);
-        Task<IEnumerable<AuditLog>> GetAll();
+        Task<int> CreateAsync(AuditLog log);
+        Task<IEnumerable<AuditLog>> GetAllAsync();
 
    
         
