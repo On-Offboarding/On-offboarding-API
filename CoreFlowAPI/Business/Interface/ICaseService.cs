@@ -9,5 +9,6 @@ namespace CoreFlowAPI.Business.Interface
         Task<IEnumerable<CaseDTO>> GetAllAsync(StatusOfCase status);
         Task<CaseDTO?> GetByIdAsync(int id);
         Task<int> CreateAsync(CreateCaseDTO @case);
+        Task<bool> UpdateAsync(CaseDTO dto);
     }
 }

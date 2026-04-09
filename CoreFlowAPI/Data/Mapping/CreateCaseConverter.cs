@@ -6,19 +6,18 @@ using CoreFlowSharedLibrary.Models;
 
 namespace CoreFlowAPI.Data.Mapping
 {
-    public class CaseConverter : Profile
+    public class CreateCaseConverter : Profile
     {
-        public CaseConverter() 
+        public CreateCaseConverter()
         {
             CreateMap<int, StatusOfCase>()
                 .ConvertUsing<IntToStatusOfCaseConverter>();
             CreateMap<int, TypeOfCase>()
                 .ConvertUsing<IntToTypeOfCaseConverter>();
 
-            CreateMap<CaseDTO, Case>();
-            CreateMap<Case, CaseDTO>();
-            CreateMap<CaseDTO, CreateCaseDTO>();
-          
+            CreateMap<CreateCaseDTO, Case>();
+            CreateMap<Case, CreateCaseDTO>();
+            CreateMap<CreateCaseDTO, CaseDTO>();
         }
     }
 }
