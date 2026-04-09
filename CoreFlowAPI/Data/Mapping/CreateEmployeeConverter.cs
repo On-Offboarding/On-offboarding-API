@@ -24,9 +24,11 @@ namespace CoreFlowAPI.Data.Mapping
                 dest => dest.PersonalId,
                 opt => opt.MapFrom(x => x.FullPersonalId));
 
+            CreateMap<CreateEmployeeDTO, EmployeeDTO>();
 
-                
-            
+
+
+
         }
     }
 }

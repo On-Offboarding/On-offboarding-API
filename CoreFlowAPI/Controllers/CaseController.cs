@@ -54,7 +54,7 @@ namespace CoreFlowAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult> CreateCase([FromBody] CaseDTO obj)
+        public async Task<ActionResult> CreateCase (CreateCaseDTO obj)
         {
             
             var createdId = await _caseService.CreateAsync(obj);
@@ -69,6 +69,27 @@ namespace CoreFlowAPI.Controllers
                 Id = createdId,
                 Message = "Case skapad framgångsrikt"
             });
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public async Task<ActionResult> UpdateCase(CaseDTO obj)
+        {
+
+            var result = await _caseService.UpdateAsync(obj);
+
+            if (!result)
+            {
+                var error = new ErrorResponse
+                {
+                    Message = "No Case Found",
+                    StatusCode = StatusCodes.Status404NotFound,
+                    TraceId = Request.HttpContext.TraceIdentifier
+                };
+                return NotFound(error);
+            }
+
+            return Ok(obj);
         }
     }
 }

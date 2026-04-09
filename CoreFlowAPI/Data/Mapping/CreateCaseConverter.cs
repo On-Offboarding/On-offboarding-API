@@ -17,6 +17,7 @@ namespace CoreFlowAPI.Data.Mapping
 
             CreateMap<CreateCaseDTO, Case>();
             CreateMap<Case, CreateCaseDTO>();
+            CreateMap<CreateCaseDTO, CaseDTO>();
         }
     }
 }
