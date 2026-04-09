@@ -1,6 +1,10 @@
-﻿namespace CoreFlowAPI.Business.Interface
+﻿using CoreFlowSharedLibrary.DTOs;
+
+namespace CoreFlowAPI.Business.Interface
 {
-    public class IAuditService
+    public interface IAuditService
     {
+        Task<List<AuditLogDTO>> GetAllAudits();
+        Task<int> Create(AuditLogDTO logDTO); 
     }
 }

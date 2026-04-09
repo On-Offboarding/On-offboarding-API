@@ -7,6 +7,7 @@ using CoreFlowAPI.Data.Mapping.MappingResolvers;
 using CoreFlowAPI.Data.Mapping.TypeConverters;
 using CoreFlowAPI.Data.Repositories;
 using CoreFlowSharedLibrary.DTOs;
+using CoreFlowSharedLibrary.Services;
 using FluentValidation;
 
 namespace CoreFlowAPI.Data.Infrastructure
@@ -55,6 +56,8 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<StringToTitleOfEmployeeConverter>();
             services.AddScoped<BirthDatePartResolver>();
             services.AddScoped<PersonalIdLastDigitsResolver>();
+            services.AddScoped<IEmailIntegrationService, EmailIntegrationService>();
+
 
             return services;
         }
