@@ -3,6 +3,7 @@ using CoreFlowAPI.Data.Interface;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Models;
 using Dapper;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CoreFlowAPI.Data.Repositories
 {
@@ -15,6 +16,24 @@ namespace CoreFlowAPI.Data.Repositories
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
+        public async Task<bool> DeleteEmployeesAccordingToGDPR(DateTime? endDate = null)
+        {
+            try
+            {
+                using var connection = _dbContext.CreateConnection();
+                await connection.QueryFirstOrDefaultAsync<User>(
+                    "Update Employees set PersonalIdLastDigits = 0000, PhoneNumber = STUFF(PhoneNumber, LEN(PhoneNumber)-1, 2, 'XX') where isnull(EndDate,getdate()) <= @EndDate", new { EndDate = endDate });
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+           
+        }
+
         public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
         {
             var sql = @"SELECT 

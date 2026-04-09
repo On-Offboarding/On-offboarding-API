@@ -6,12 +6,12 @@ using CoreFlowSharedLibrary.Enums;
 using CoreFlowSharedLibrary.Models;
 namespace CoreFlowAPI.Data.Mapping
 {
-    public class EmployeeConverter : Profile
+    public class CreateEmployeeConverter : Profile
     { 
-        public EmployeeConverter() 
+        public CreateEmployeeConverter() 
         {
 
-            CreateMap<EmployeeDTO, Employee>()
+            CreateMap<CreateEmployeeDTO, Employee>()
                 .ForMember(
                 dest => dest.PersonalId,
                 opt => opt.MapFrom<BirthDatePartResolver>())
@@ -19,12 +19,15 @@ namespace CoreFlowAPI.Data.Mapping
                 dest => dest.PersonalIdLastDigits,
                 opt => opt.MapFrom<PersonalIdLastDigitsResolver>());
 
-            CreateMap<Employee, EmployeeDTO>()
+            CreateMap<Employee, CreateEmployeeDTO>()
                 .ForMember(
                 dest => dest.PersonalId,
                 opt => opt.MapFrom(x => x.FullPersonalId));
 
-            CreateMap<EmployeeDTO, CreateEmployeeDTO>();
+            CreateMap<CreateEmployeeDTO, EmployeeDTO>();
+
+
+
 
         }
     }

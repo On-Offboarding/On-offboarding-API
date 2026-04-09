@@ -10,8 +10,8 @@ namespace CoreFlowSharedLibrary.Models
     public class Account
     {
         public int Id { get; set; }
-        public string? UserName { get; set; }
-        public string? Info { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Info { get; set; } = string.Empty;
         public int SystemAccessId { get; set; }
         public int Status { get; set; }
         public int EmployeeId { get; set; }

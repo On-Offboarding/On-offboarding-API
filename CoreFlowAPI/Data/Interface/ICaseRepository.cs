@@ -10,5 +10,8 @@ namespace CoreFlowAPI.Data.Interface
         Task<IEnumerable<CaseDTO>> GetAllAsync(StatusOfCase status);
         Task<CaseDTO?> GetByIdAsync(int id);
         Task<int> CreateAsync(Case @case, Employee employee, List<Account> accounts);
+        Task<bool> UpdateAsync(Case @case, Employee employee, List<Account> accounts);
     }
+
+
 }

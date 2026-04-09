@@ -52,9 +52,9 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<IntToTypeOfCaseConverter>();
             services.AddScoped<IntToStatusOfCaseConverter>();
             services.AddScoped<IntToStatusOfAccountConverter>();
-            services.AddScoped<StringToTitleOfEmployeeConverter>();
             services.AddScoped<BirthDatePartResolver>();
             services.AddScoped<PersonalIdLastDigitsResolver>();
+            services.AddScoped<IExcelService, ExcelService>();
 
             return services;
         }

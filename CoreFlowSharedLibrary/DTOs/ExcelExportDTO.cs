@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreFlowSharedLibrary.Enums
+namespace CoreFlowSharedLibrary.DTOs
 {
-    public enum TitleOfEmployee
+    public class ExcelExportDTO
     {
-       Unknown = 0,
-       Seller = 1,
-       CaseManager = 2,
+
     }
 }
