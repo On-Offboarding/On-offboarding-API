@@ -61,11 +61,6 @@ namespace CoreFlowAPI
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
 
-            //services
-            builder.Services.AddScoped<ICaseService, CaseService>();
-            builder.Services.AddScoped<IEmailIntegrationService, EmailIntegrationService>();
-
-
             var app = builder.Build();
 
             // --- Middleware Pipeline ---

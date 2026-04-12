@@ -7,6 +7,7 @@ using CoreFlowAPI.Data.Mapping.MappingResolvers;
 using CoreFlowAPI.Data.Mapping.TypeConverters;
 using CoreFlowAPI.Data.Repositories;
 using CoreFlowSharedLibrary.DTOs;
+using CoreFlowSharedLibrary.Services;
 using FluentValidation;
 
 namespace CoreFlowAPI.Data.Infrastructure
@@ -22,6 +23,7 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<ISystemAccessRepository, SystemAccessRepository>();
             services.AddScoped<ICaseRepository, CaseRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
             return services;
 
@@ -38,6 +40,7 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddValidatorsFromAssemblyContaining<CaseDTO>();
             services.AddValidatorsFromAssemblyContaining<EmployeeDTO>();
             services.AddValidatorsFromAssemblyContaining<AccountDTO>();
+            services.AddValidatorsFromAssemblyContaining<AuditLogValidater>();
 
             return services;
         }
@@ -49,11 +52,13 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISystemAccessService, SystemAccessService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IAuditLogService, AuditLogService>();
             services.AddScoped<IntToTypeOfCaseConverter>();
             services.AddScoped<IntToStatusOfCaseConverter>();
             services.AddScoped<IntToStatusOfAccountConverter>();
             services.AddScoped<BirthDatePartResolver>();
             services.AddScoped<PersonalIdLastDigitsResolver>();
+            services.AddScoped<IEmailIntegrationService, EmailIntegrationService>();
             services.AddScoped<IExcelService, ExcelService>();
 
             return services;

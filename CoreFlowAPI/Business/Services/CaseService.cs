@@ -6,6 +6,7 @@ using CoreFlowSharedLibrary.DTOs.Email;
 using CoreFlowSharedLibrary.Enums;
 using CoreFlowSharedLibrary.Models;
 using CoreFlowSharedLibrary.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace CoreFlowAPI.Business.Services
 {
@@ -15,20 +16,23 @@ namespace CoreFlowAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IValidationService _validation;
         private readonly IEmailIntegrationService _emailService; 
-        private readonly ILogger<CaseService> _logger; 
+        private readonly ILogger<CaseService> _logger;
+        private readonly IAuditLogService _auditLogService;
 
         public CaseService(
             ICaseRepository repository,
             IMapper mapper,
             IValidationService validation,
             IEmailIntegrationService emailService,
-            ILogger<CaseService> logger)
+            ILogger<CaseService> logger,
+            IAuditLogService auditLogService)
         {
             _repo = repository;
             _mapper = mapper;
             _validation = validation;
             _emailService = emailService;
             _logger = logger;
+            _auditLogService = auditLogService;
         }
 
         public async Task<int> CreateAsync(CreateCaseDTO obj)
@@ -50,8 +54,10 @@ namespace CoreFlowAPI.Business.Services
 
 
             var createdId = await _repo.CreateAsync(model, employeeModel, accountsModel);
+            
             var created = _mapper.Map<CaseDTO>(obj);
             created.Id = createdId;
+            await _auditLogService.CreateCaseAsync(created);
             // 4. Skicka email i bakgrunden om allt gick bra
             if (createdId > 0)
             {
@@ -137,8 +143,11 @@ namespace CoreFlowAPI.Business.Services
                     accountsModel.Add(_mapper.Map<Account>(account));
                 }
             }
+            var result = await _repo.UpdateAsync(caseModel, employeeModel, accountsModel);
+            if(result)
+                await _auditLogService.UpdateCaseAsync(existing);
 
-            return await _repo.UpdateAsync(caseModel, employeeModel, accountsModel);
+            return result;
 
         }
 

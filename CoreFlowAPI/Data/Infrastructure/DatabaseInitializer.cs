@@ -202,6 +202,9 @@ namespace CoreFlowAPI.Data.Infrastructure
 
             sql = CreateProfileSystemAccessTable();
             await conn.ExecuteAsync(sql);
+            
+            sql = CreateAuditLogTable();
+            await conn.ExecuteAsync(sql);
         }
 
         
@@ -350,5 +353,19 @@ namespace CoreFlowAPI.Data.Infrastructure
         """;
         }
 
+        private static string CreateAuditLogTable()
+        {
+            return """
+        IF OBJECT_ID('dbo.AuditLog', 'U') IS NULL
+        BEGIN
+            CREATE TABLE dbo.AuditLog (
+                Id INT IDENTITY(1,1) PRIMARY KEY,
+                Action NVARCHAR(100) NOT NULL,
+                CaseId INT NULL,
+                TimeStamp DATETIME NOT NULL
+            );
+        END
+        """;
+        }
     }
 }
