@@ -5,7 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-CoreFlowAPI-f6b23f64-e188-4ad4-bd3a-5e4025bf01ed</UserSecretsId>
+	<PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Templates\caseReport.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.0.0" />
@@ -20,11 +25,19 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="4.3.0" />
     <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.2.0" />
     <PackageReference Include="Personnummer" Version="3.5.1" />
+    <PackageReference Include="RazorLight" Version="2.3.1" />
+    <PackageReference Include="Select.Pdf.NetCore" Version="26.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CoreFlowSharedLibrary\CoreFlowSharedLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Templates\caseReport.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

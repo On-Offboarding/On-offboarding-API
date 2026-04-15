@@ -1,0 +1,146 @@
+@using CoreFlowAPI.Business.ViewModels
+@model CaseReportViewModel
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Rapport</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 40px;
+            color: #2c2c2c;
+            font-size: 14px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .company {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .meta {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            border-left: 4px solid #0078D4;
+            padding-left: 8px;
+            margin-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 40px;
+        }
+
+        .info-item {
+            margin-bottom: 6px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background-color: #f0f0f0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="company">@Model.Employee.Company.ToString()</div>
+        <div class="meta">
+            Datum: @Model.ReportDate.ToString("yyyy-MM-dd")<br>
+            Dokument: @Model.ReportName
+        </div>
+    </div>
+
+    <!-- ANSTÄLLD -->
+    <div class="section">
+        <div class="section-title">@Model.EmployeeType</div>
+        <div class="info-grid">
+            <div class="info-item"><span class="label">Namn:</span> @Model.Employee.FirstName @Model.Employee.LastName</div>
+            <div class="info-item"><span class="label">Avdelning:</span> @Model.Employee.Department</div>
+            <div class="info-item"><span class="label">Titel:</span> @Model.Employee.Title</div>
+            <div class="info-item"><span class="label">Mobilnr:</span> @Model.Employee.PhoneNumber</div>
+        </div>
+    </div>
+
+    <!-- BEHÖRIGHETER -->
+    <div class="section">
+        <div class="section-title">@Model.SystemAccessName</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>System</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var system in Model.SystemAccess)
+                {
+                    <tr>
+                        <td>@system.Name</td>
+                        <td>
+                            <input type="checkbox" disabled />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SIGNATUR -->
+    <div class="section">
+        <div class="section-title">@Model.ApprovalName</div>
+        <br><br>
+        ___________________________<br>
+        Signatur
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+    </div>
+
+</body>
+</html>

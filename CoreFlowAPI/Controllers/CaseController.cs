@@ -11,11 +11,13 @@ namespace CoreFlowAPI.Controllers
     public class CaseController : ControllerBase
     {
         private readonly ICaseService _caseService;
+        private readonly IPDFService _pdfService;
 
-    
-        public CaseController(ICaseService caseService)
+
+        public CaseController(ICaseService caseService, IPDFService pdfService  )
         {
             _caseService = caseService;
+            _pdfService = pdfService;
         }
 
         [HttpGet]
@@ -90,6 +92,18 @@ namespace CoreFlowAPI.Controllers
             }
 
             return Ok(obj);
+        }
+
+        [HttpGet]
+        [Route("Export/{caseId}")]
+        public async Task<ActionResult> ExportToPdf(int caseId)
+        {
+            var caseObj = await _caseService.GetByIdAsync(caseId);
+
+            if (caseObj == null)
+                return NotFound();
+
+            return File(await _pdfService.ExportToPDF(caseObj),"application/pdf","Behörighetsrapport.pdf");
         }
     }
 }

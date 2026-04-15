@@ -24,6 +24,7 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<ICaseRepository, CaseRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+            services.AddScoped<IPDFService, PDFService>();
 
             return services;
 
