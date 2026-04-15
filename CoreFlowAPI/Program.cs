@@ -32,6 +32,10 @@ namespace CoreFlowAPI
             {
                 opt.SchemaFilter<EnumSchemaFilter>();
             });
+            builder.Services.AddRouting(r => 
+            {
+                r.LowercaseUrls = true;
+            });
 
             // 4. Core Services
             builder.Services.AddDataAccess(builder.Configuration);
