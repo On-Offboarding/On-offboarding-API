@@ -2,10 +2,12 @@
 using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("Api/[controller]")]
     public class CaseController : ControllerBase

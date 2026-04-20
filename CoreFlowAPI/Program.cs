@@ -18,6 +18,7 @@ namespace CoreFlowAPI
             // 1. Autentisering
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+            builder.Services.AddAuthorization();
 
             // 2. Controllers & JSON-inställningar (Flyttat från första programmet)
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -82,6 +83,7 @@ namespace CoreFlowAPI
             app.UseCors("AllowReactApp");
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

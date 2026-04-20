@@ -1,5 +1,4 @@
 ﻿using CoreFlowAPI.Business.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
@@ -18,6 +17,12 @@ namespace CoreFlowAPI.Controllers
         public async Task<ActionResult> GetAllAudits()
         {
             return Ok(await auditLogService.GetAllAuditsAsync());
+        }
+
+        [HttpGet("claims")]
+        public IActionResult Claims()
+        {
+            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
     }
 }

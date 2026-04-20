@@ -2,10 +2,12 @@
 using CoreFlowAPI.Data.Interface;
 using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("Api/[controller]")]
     public class UserController : ControllerBase
