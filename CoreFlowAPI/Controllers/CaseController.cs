@@ -14,7 +14,7 @@ namespace CoreFlowAPI.Controllers
         private readonly IPDFService _pdfService;
 
 
-        public CaseController(ICaseService caseService, IPDFService pdfService  )
+        public CaseController(ICaseService caseService, IPDFService pdfService)
         {
             _caseService = caseService;
             _pdfService = pdfService;
