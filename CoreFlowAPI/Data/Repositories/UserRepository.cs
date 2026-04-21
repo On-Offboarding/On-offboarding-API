@@ -50,5 +50,29 @@ namespace CoreFlowAPI.Data.Repositories
                 "select Id, Name, Email, RoleId from users where Id = @Id", new { Id = id });
             return model;
         }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            using var connection = _dbContext.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<User>(
+                "select Id, Name, Email, RoleId from users where Email = @Email", new { Email = email });
+        }
+
+        public async Task UpdateNameAsync(int userId, string name)
+        {
+            using var connection = _dbContext.CreateConnection();
+            await connection.ExecuteAsync(
+                "update dbo.Users set Name = @Name where Id = @Id",
+                new { Name = name, Id = userId });
+        }
+
+        public async Task<bool> UpdateRoleAsync(int userId, int roleId)
+        {
+            using var connection = _dbContext.CreateConnection();
+            var rows = await connection.ExecuteAsync(
+                "update dbo.Users set RoleId = @RoleId where Id = @Id",
+                new { RoleId = roleId, Id = userId });
+            return rows > 0;
+        }
     }
 }
