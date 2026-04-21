@@ -101,7 +101,7 @@ namespace CoreFlowAPI.Business.Services
                 {
                     await _emailService.SendOffboardingEmailAsync(new OffboardingEmailDto
                     {
-                        CaseId = null,
+                        CaseId = caseDto.Id,
                         FirstName = emp.FirstName ?? "",
                         LastName = emp.LastName ?? "",
                         PersonalNumber = emp.PersonalId?.Replace("-", "") ?? "",
@@ -111,6 +111,7 @@ namespace CoreFlowAPI.Business.Services
                         EmploymentDate = emp.DateOfEmployment,
                         JobTitle = emp.Title ?? "",
                         StartDate = emp.StartDate,
+                        EndDate = emp.EndDate,
                         SelectedSystems = systems,           
                         RequestedBy = "system@finansia.se" //hårdkoda en default-adress för nu 
                     });

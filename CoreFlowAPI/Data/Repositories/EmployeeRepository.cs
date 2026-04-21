@@ -50,7 +50,6 @@ namespace CoreFlowAPI.Data.Repositories
                 e.EndDate,
                 e.DateOfEmployment,
                 e.UserId,
-                a.Id,
                 a.Id as AccountId,
                 a.UserName,
                 a.Info,
@@ -80,7 +79,7 @@ namespace CoreFlowAPI.Data.Repositories
 
                    return currentEmployee;
                },
-                splitOn: "Id,AccountId"
+                splitOn: "AccountId"
                     );
             return employeeDictionary.Values.ToList();
         }
@@ -101,7 +100,6 @@ namespace CoreFlowAPI.Data.Repositories
                 e.EndDate,
                 e.DateOfEmployment,
                 e.UserId,
-                a.Id,
                 a.Id as AccountId,
                 a.UserName,
                 a.Info,
@@ -133,7 +131,7 @@ namespace CoreFlowAPI.Data.Repositories
                    return currentEmployee;
                },
                 new { Id = id },
-                splitOn: "Id,AccountId"
+                splitOn: "AccountId"
                     );
             return employeeDictionary.Values.FirstOrDefault();
         }
