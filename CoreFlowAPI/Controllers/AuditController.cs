@@ -18,11 +18,5 @@ namespace CoreFlowAPI.Controllers
         {
             return Ok(await auditLogService.GetAllAuditsAsync());
         }
-
-        [HttpGet("claims")]
-        public IActionResult Claims()
-        {
-            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
-        }
     }
 }
