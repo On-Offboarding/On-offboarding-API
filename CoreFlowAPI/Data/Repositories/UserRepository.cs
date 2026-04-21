@@ -37,25 +37,30 @@ namespace CoreFlowAPI.Data.Repositories
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             using var connection = _dbContext.CreateConnection();
-            var models = await connection.QueryAsync<User>(
-                "select Id, Name, Email, RoleId from users");
-            return models;
-          
+            return await connection.QueryAsync<User>(@"
+                select u.Id, u.Name, u.Email, u.RoleId, r.Name as Role
+                from dbo.Users u
+                left join dbo.Roles r on u.RoleId = r.Id");
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
             using var connection = _dbContext.CreateConnection();
-            var model = await connection.QueryFirstOrDefaultAsync<User>(
-                "select Id, Name, Email, RoleId from users where Id = @Id", new { Id = id });
-            return model;
+            return await connection.QueryFirstOrDefaultAsync<User>(@"
+                select u.Id, u.Name, u.Email, u.RoleId, r.Name as Role
+                from dbo.Users u
+                left join dbo.Roles r on u.RoleId = r.Id
+                where u.Id = @Id", new { Id = id });
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
             using var connection = _dbContext.CreateConnection();
-            return await connection.QueryFirstOrDefaultAsync<User>(
-                "select Id, Name, Email, RoleId from users where Email = @Email", new { Email = email });
+            return await connection.QueryFirstOrDefaultAsync<User>(@"
+                select u.Id, u.Name, u.Email, u.RoleId, r.Name as Role
+                from dbo.Users u
+                left join dbo.Roles r on u.RoleId = r.Id
+                where u.Email = @Email", new { Email = email });
         }
 
         public async Task UpdateNameAsync(int userId, string name)
