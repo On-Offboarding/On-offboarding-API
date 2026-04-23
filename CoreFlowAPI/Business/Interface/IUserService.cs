@@ -7,5 +7,6 @@ namespace CoreFlowAPI.Business.Interface
         Task<IEnumerable<UserDTO>> GetAllAsync();
         Task<UserDTO?> GetByIdAsync(int id);
         Task<int> CreateAsync(UserDTO user);
+        Task<bool> UpdateRoleAsync(int userId, int roleId);
     }
 }

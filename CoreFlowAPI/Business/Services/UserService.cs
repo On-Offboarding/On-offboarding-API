@@ -36,5 +36,14 @@ namespace CoreFlowAPI.Business.Services
             var user = await _repo.GetByIdAsync(id);
             return _mapper.Map<UserDTO>(user);
         }
+
+        public async Task<bool> UpdateRoleAsync(int userId, int roleId)
+        {
+            var user = await _repo.GetByIdAsync(userId);
+            if (user is null)
+                return false;
+
+            return await _repo.UpdateRoleAsync(userId, roleId);
+        }
     }
 }

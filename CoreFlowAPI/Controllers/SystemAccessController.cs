@@ -1,12 +1,14 @@
 ﻿using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Data.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
-    [Route("Api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("Api/[controller]")]
     public class SystemAccessController : ControllerBase
     {
         private readonly ISystemAccessService _systemAccessService;

@@ -1,10 +1,12 @@
 ﻿using CoreFlowAPI.Business.Interface;
 using CoreFlowAPI.Business.Services;
 using CoreFlowSharedLibrary.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
+    [Authorize]
     [Route("Api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
