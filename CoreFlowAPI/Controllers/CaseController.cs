@@ -2,10 +2,12 @@
 using CoreFlowSharedLibrary.Domain;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("Api/[controller]")]
     public class CaseController : ControllerBase
@@ -14,7 +16,7 @@ namespace CoreFlowAPI.Controllers
         private readonly IPDFService _pdfService;
 
 
-        public CaseController(ICaseService caseService, IPDFService pdfService  )
+        public CaseController(ICaseService caseService, IPDFService pdfService)
         {
             _caseService = caseService;
             _pdfService = pdfService;

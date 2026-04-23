@@ -6,6 +6,7 @@ using CoreFlowAPI.Data.Infrastructure;
 using CoreFlowSharedLibrary.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Microsoft.OpenApi.Models;
 
 namespace CoreFlowAPI
 {
@@ -18,11 +19,12 @@ namespace CoreFlowAPI
             // 1. Autentisering
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+            builder.Services.AddAuthorization();
 
-            // 2. Controllers & JSON-inst‰llningar (Flyttat frÂn fˆrsta programmet)
+            // 2. Controllers & JSON-instÔøΩllningar (Flyttat frÔøΩn fÔøΩrsta programmet)
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
-                // Gˆr att Enums visas som str‰ngar ist‰llet fˆr siffror
+                // GÔøΩr att Enums visas som strÔøΩngar istÔøΩllet fÔøΩr siffror
                 options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
 
@@ -31,6 +33,29 @@ namespace CoreFlowAPI
             builder.Services.AddSwaggerGen(opt =>
             {
                 opt.SchemaFilter<EnumSchemaFilter>();
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Klistra in din JWT-token h√§r (utan 'Bearer '-prefix)"
+                });
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
             builder.Services.AddRouting(r => 
             {
@@ -82,6 +107,7 @@ namespace CoreFlowAPI
             app.UseCors("AllowReactApp");
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
