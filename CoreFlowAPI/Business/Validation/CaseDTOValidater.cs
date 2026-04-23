@@ -27,8 +27,6 @@ namespace CoreFlowAPI.Business.Validation
             When(x => x.Type == TypeOfCase.Onboarding, () => {
                 RuleFor(x => x.Employee.StartDate)
                     .NotEmpty();
-                    //.GreaterThanOrEqualTo(DateTime.Today)
-                    //.WithMessage("Vid onboarding måste startdatum vara idag eller framåt i tiden.");
 
                 RuleFor(x => x.Employee.DateOfEmployment)
                     .NotEmpty()
