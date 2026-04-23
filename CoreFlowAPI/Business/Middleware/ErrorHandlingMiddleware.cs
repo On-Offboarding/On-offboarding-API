@@ -47,7 +47,7 @@ namespace CoreFlowAPI.Business.Middleware
                 _logger.LogError(ex, "Unhandled exception");
                 var response = new ErrorResponse
                 {
-                    Message = "An unexpected error occurred",
+                    Message = ex.Message + " | " + ex.InnerException?.Message,
                     StatusCode = StatusCodes.Status500InternalServerError,
                     TraceId = context.TraceIdentifier
                 };
