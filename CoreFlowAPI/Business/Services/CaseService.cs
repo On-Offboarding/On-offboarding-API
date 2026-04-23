@@ -7,6 +7,7 @@ using CoreFlowSharedLibrary.Enums;
 using CoreFlowSharedLibrary.Models;
 using CoreFlowSharedLibrary.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
+using CoreFlowAPI.Business.Helpers;
 
 namespace CoreFlowAPI.Business.Services
 {
@@ -18,6 +19,7 @@ namespace CoreFlowAPI.Business.Services
         private readonly IEmailIntegrationService _emailService; 
         private readonly ILogger<CaseService> _logger;
         private readonly IAuditLogService _auditLogService;
+        private readonly ISystemAccessHelper _systemAccessHelper;
 
         public CaseService(
             ICaseRepository repository,
@@ -25,7 +27,8 @@ namespace CoreFlowAPI.Business.Services
             IValidationService validation,
             IEmailIntegrationService emailService,
             ILogger<CaseService> logger,
-            IAuditLogService auditLogService)
+            IAuditLogService auditLogService,
+            ISystemAccessHelper systemAccessHelper)
         {
             _repo = repository;
             _mapper = mapper;
@@ -33,6 +36,7 @@ namespace CoreFlowAPI.Business.Services
             _emailService = emailService;
             _logger = logger;
             _auditLogService = auditLogService;
+            _systemAccessHelper = systemAccessHelper;
         }
 
         public async Task<int> CreateAsync(CreateCaseDTO obj)
@@ -75,9 +79,13 @@ namespace CoreFlowAPI.Business.Services
                 var emp = caseDto.Employee;
                 if (emp == null) return;
 
-                var systems = emp.Accounts?
-                    .Select(a => a.SystemAccessId.ToString())
-                    .ToList() ?? new List<string>();
+                // Hämta system IDs
+                var systemIds = emp.Accounts?
+                    .Select(a => a.SystemAccessId)
+                    .ToList() ?? new List<int>();
+
+                // Konvertera IDs till namn med hjälp av helper
+                var systemNames = await _systemAccessHelper.GetSystemNamesByIdsAsync(systemIds);
 
                 if (caseDto.Type == TypeOfCase.Onboarding)
                 {
@@ -93,7 +101,7 @@ namespace CoreFlowAPI.Business.Services
                         EmploymentDate = emp.DateOfEmployment,
                         JobTitle = emp.Title ?? "",
                         StartDate = emp.StartDate,
-                        SelectedSystems = systems,
+                        SelectedSystems = systemNames,
                         RequestedBy = "system@finansia.se"
                     });
                 }
@@ -101,7 +109,7 @@ namespace CoreFlowAPI.Business.Services
                 {
                     await _emailService.SendOffboardingEmailAsync(new OffboardingEmailDto
                     {
-                        CaseId = null,
+                        CaseId = caseDto.Id,
                         FirstName = emp.FirstName ?? "",
                         LastName = emp.LastName ?? "",
                         PersonalNumber = emp.PersonalId?.Replace("-", "") ?? "",
@@ -111,8 +119,9 @@ namespace CoreFlowAPI.Business.Services
                         EmploymentDate = emp.DateOfEmployment,
                         JobTitle = emp.Title ?? "",
                         StartDate = emp.StartDate,
-                        SelectedSystems = systems,           
-                        RequestedBy = "system@finansia.se" //hårdkoda en default-adress för nu 
+                        EndDate = emp.EndDate,
+                        SelectedSystems = systemNames,
+                        RequestedBy = "system@finansia.se"
                     });
                 }
 

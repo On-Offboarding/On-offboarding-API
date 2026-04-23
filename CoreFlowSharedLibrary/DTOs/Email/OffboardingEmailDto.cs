@@ -51,6 +51,9 @@ public class OffboardingEmailDto
     [Required(ErrorMessage = "Startdatum är obligatoriskt")]
     public DateTime StartDate { get; set; }
 
+    [Required(ErrorMessage = "Slutdatum är obligatoriskt vid offboarding")]
+    public DateTime? EndDate { get; set; }
+
     [Required(ErrorMessage = "Minst ett system måste väljas")]
     [MinLength(1, ErrorMessage = "Minst ett system måste väljas")]
     public List<string> SelectedSystems { get; set; } = new();
