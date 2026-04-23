@@ -9,6 +9,7 @@ using CoreFlowAPI.Data.Repositories;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Services;
 using FluentValidation;
+using CoreFlowAPI.Business.Helpers;
 
 namespace CoreFlowAPI.Data.Infrastructure
 {
@@ -61,6 +62,7 @@ namespace CoreFlowAPI.Data.Infrastructure
             services.AddScoped<PersonalIdLastDigitsResolver>();
             services.AddScoped<IEmailIntegrationService, EmailIntegrationService>();
             services.AddScoped<IExcelService, ExcelService>();
+            services.AddScoped<ISystemAccessHelper, SystemAccessHelper>();
 
             return services;
         }
