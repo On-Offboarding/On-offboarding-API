@@ -313,7 +313,7 @@ namespace CoreFlowAPI.Data.Infrastructure
                 LastName NVARCHAR(50) NULL,
                 Title NVARCHAR(50) NULL, 
                 PersonalId INT NOT NULL, 
-                PersonalIdLastDigits INT NOT NULL,
+                PersonalIdLastDigits NVARCHAR(50) NOT NULL,
                 PhoneNumber NVARCHAR(50) NULL,
                 Company NVARCHAR(50),
                 Department NVARCHAR(50),
