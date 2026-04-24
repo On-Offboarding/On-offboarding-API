@@ -1,5 +1,4 @@
-﻿using CoreFlowAPI.Business.ViewModels;
-using CoreFlowSharedLibrary.DTOs;
+﻿using CoreFlowSharedLibrary.DTOs;
 
 namespace CoreFlowAPI.Business.Interface
 {

@@ -1,8 +1,10 @@
 ﻿using CoreFlowAPI.Business.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreFlowAPI.Controllers
 {
+    [Authorize]
     [Route("Api/[controller]")]
     [ApiController]
     public class AuditController : ControllerBase
