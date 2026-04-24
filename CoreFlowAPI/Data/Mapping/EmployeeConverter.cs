@@ -20,9 +20,10 @@ namespace CoreFlowAPI.Data.Mapping
                 opt => opt.MapFrom<PersonalIdLastDigitsResolver>());
 
             CreateMap<Employee, EmployeeDTO>()
-                .ForMember(
-                dest => dest.PersonalId,
-                opt => opt.MapFrom(x => x.FullPersonalId));
+                .ForMember(dest => dest.PersonalId, opt => opt.MapFrom(x => x.FullPersonalId))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateTimeHelper.ToSwedishTime(src.StartDate)))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => DateTimeHelper.ToSwedishTime(src.EndDate)))
+                .ForMember(dest => dest.DateOfEmployment, opt => opt.MapFrom(src => DateTimeHelper.ToSwedishTime(src.DateOfEmployment)));
 
             CreateMap<EmployeeDTO, CreateEmployeeDTO>();
 
