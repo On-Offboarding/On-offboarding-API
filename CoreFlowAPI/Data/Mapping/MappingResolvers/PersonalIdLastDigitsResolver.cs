@@ -1,37 +1,25 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CoreFlowSharedLibrary.DTOs;
 using CoreFlowSharedLibrary.Models;
 
 namespace CoreFlowAPI.Data.Mapping.MappingResolvers
 {
-    public class PersonalIdLastDigitsResolver : IValueResolver<object, Employee, int>
+    public class PersonalIdLastDigitsResolver : IValueResolver<object, Employee, string>
     {
-        public int Resolve(object source, Employee destination, int destMember, ResolutionContext context)
+        public string Resolve(object source, Employee destination, string destMember, ResolutionContext context)
         {
-            if(source is EmployeeDTO)
+            string? personalId = source switch
             {
-                var model = source as EmployeeDTO;
-                if (model != null) {
-                    if (string.IsNullOrEmpty(model.PersonalId))
-                        return 0;
+                EmployeeDTO dto => dto.PersonalId,
+                CreateEmployeeDTO dto => dto.PersonalId,
+                _ => null
+            };
 
-                    var parts = model.PersonalId.Split('-');
-                    return parts.Length > 1 && int.TryParse(parts[1], out var n) ? n : 0;
-                }
-            }
-            if(source is CreateEmployeeDTO)
-            {
-                var model = source as CreateEmployeeDTO;
-                if (model != null)
-                {
-                    if (string.IsNullOrEmpty(model.PersonalId))
-                        return 0;
+            if (string.IsNullOrEmpty(personalId))
+                return "0000";
 
-                    var parts = model.PersonalId.Split('-');
-                    return parts.Length > 1 && int.TryParse(parts[1], out var n) ? n : 0;
-                }
-            }
-            return 0000;
+            var parts = personalId.Split('-');
+            return parts.Length > 1 ? parts[1] : "0000";
         }
     }
 }

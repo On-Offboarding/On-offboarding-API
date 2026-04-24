@@ -23,7 +23,7 @@ namespace CoreFlowAPI.Data.Repositories
             {
                 using var connection = _dbContext.CreateConnection();
                 await connection.QueryFirstOrDefaultAsync<User>(
-                    "Update Employees set PersonalIdLastDigits = 0000, PhoneNumber = STUFF(PhoneNumber, LEN(PhoneNumber)-1, 2, 'XX') where isnull(EndDate,getdate()) <= @EndDate", new { EndDate = endDate });
+                    "Update Employees set PersonalIdLastDigits = '0000', PhoneNumber = STUFF(PhoneNumber, LEN(PhoneNumber)-1, 2, 'XX') where isnull(EndDate,getdate()) <= @EndDate", new { EndDate = endDate });
                 return true;
             }
             catch (Exception ex)

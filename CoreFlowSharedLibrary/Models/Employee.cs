@@ -10,7 +10,7 @@ namespace CoreFlowSharedLibrary.Models
         public string? Title { get; set; }
         public string FullPersonalId { get { return string.Format("{0}-{1}", PersonalId, PersonalIdLastDigits); } }
         public required int PersonalId { get; set; } 
-        public required int PersonalIdLastDigits { get; set; }    
+        public required string PersonalIdLastDigits { get; set; }
         public string? PhoneNumber { get; set; }
         public CompanyOfEmployee Company { get; set; }
         public string? Department { get; set; }
